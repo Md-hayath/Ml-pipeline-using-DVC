@@ -5,8 +5,11 @@ stages:
     deps:
     - path: src/data_ingestion.py
       hash: md5
-      md5: ffdb7e983dca3aa57e5fcaca093a113e
-      size: 3651
+      md5: e77babc59fd726e93bcab492d11329f6
+      size: 3649
+    params:
+      params.yaml:
+        data_ingestion.test_size: 0.21
     outs:
     - path: data/raw
       hash: md5
@@ -41,44 +44,51 @@ stages:
       nfiles: 2
     - path: src/feature_engineering.py
       hash: md5
-      md5: 341cdc3b6b059f3da4b5e0b403c37730
-      size: 3912
+      md5: 31edf4e0f86bc88141df97e22e7c5fb2
+      size: 3919
+    params:
+      params.yaml:
+        feature_engineering.max_features: 45
     outs:
     - path: data/processed
       hash: md5
-      md5: 8055a0ba6e072d7f85c11cbd4e6591f1.dir
-      size: 1180748
+      md5: 9d01aabf0dee662d17274eba265eec5b.dir
+      size: 1066515
       nfiles: 2
   model_building:
     cmd: python src/model_building.py
     deps:
     - path: data/processed
       hash: md5
-      md5: 8055a0ba6e072d7f85c11cbd4e6591f1.dir
-      size: 1180748
+      md5: 9d01aabf0dee662d17274eba265eec5b.dir
+      size: 1066515
       nfiles: 2
     - path: src/model_building.py
       hash: md5
-      md5: 30a94d0d38f14b64f4338d7782c355e6
+      md5: 6f999ba45adc59b5b133af76a16f4f72
       size: 4477
+    params:
+      params.yaml:
+        model_building.n_estimators: 20
+        model_building.random_state: 2
     outs:
     - path: models/model.pkl
       hash: md5
-      md5: 407453bb1b8860701306cdac1397e562
-      size: 970135
+      md5: fa6a57531e51a31b73d281746092b4f1
+      size: 760662
   model_evaluation:
     cmd: python src/model_evaluation.py
     deps:
     - path: models/model.pkl
       hash: md5
-      md5: 407453bb1b8860701306cdac1397e562
-      size: 970135
+      md5: fa6a57531e51a31b73d281746092b4f1
+      size: 760662
     - path: src/model_evaluation.py
       hash: md5
-      md5: 7f586612c44724aa918f57bc41c050b9
-      size: 4646
+      md5: 2f01490e288639e6b199d7006e86085a
+      size: 4645
     outs:
     - path: reports/metrics.json
       hash: md5
-      md5: c92fb047cdadbbc0aefcfede4b916c62
-      size: 133
+      md5: 1597179e89448d4478329eca797a9f15
+      size: 120
